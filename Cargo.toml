@@ -1,0 +1,74 @@
+[package]
+name = "flow-trades"
+version = "0.3.0"
+edition = "2021"
+
+[lib]
+name = "flow_trades"
+path = "src/lib.rs"
+
+[[bin]]
+name = "flow-trades"
+path = "src/main.rs"
+
+[dependencies]
+# Solana
+solana-sdk = "2.2"
+solana-client = "2.2"
+spl-token = "6"
+spl-associated-token-account = "4"
+
+# HTTP / Async
+axum = { version = "0.8", features = ["ws"] }
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.6", features = ["cors"] }
+ureq = { version = "2", features = ["json"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+bs58 = "0.5"
+base64 = "0.22"
+
+# CLI
+clap = { version = "4", features = ["derive", "env"] }
+
+# Serialization (binary)
+borsh = "1.0"
+
+# Concurrency
+dashmap = "6"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }
+
+# Error handling
+thiserror = "2"
+
+# Async utilities
+futures = "0.3"
+
+# Misc
+chrono = "0.4"
+toml = "0.8"
+solana-account-decoder = "2.2"
+solana-pubsub-client = "2.2"
+solana-transaction-status-client-types = "2.2"
+bincode = "1"
+rusqlite = { version = "0.32", features = ["bundled"] }
+prometheus = "0.13"
+yellowstone-grpc-client = "13"
+yellowstone-grpc-proto = "12"
+tonic = "0.14"
+
+[dev-dependencies]
+sha2 = "0.10"
+tokio-tungstenite = "0.24"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+# Strip symbols + debug info from the release binary (~7 MB smaller,
+# no Rust module paths or source filenames in the symbol table).
+strip = "symbols"

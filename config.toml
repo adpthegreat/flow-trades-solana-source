@@ -1,0 +1,84 @@
+# ══════════════════════════════════════════════════════════════
+# flow-trades configuration
+# ══════════════════════════════════════════════════════════════
+#
+# This file configures the flow-trades swap API binary.
+# All settings have sensible defaults — only rpc_url is required.
+#
+# Usage:
+#   ./flow-trades                           # uses ./config.toml
+#   ./flow-trades --config /path/to/config.toml
+
+# ── RPC ──────────────────────────────────────────────────────
+
+# Solana RPC endpoint (required)
+rpc_url = "https://your-solana-rpc.com"
+
+# API listen address
+listen = "127.0.0.1:8080"
+
+# Log level: trace, debug, info, warn, error
+log_level = "info"
+
+# ── Fee Collection ────────────────────────────────────────────
+# All swaps route through the FLoW router program (hardcoded).
+# Platform fee: 0.5% — split 70% referral / 30% protocol.
+# You cannot change the program ID or fee rate.
+
+[router]
+# Protocol fee token account — receives 30% of fee.
+# fee_account = "YourProtocolTokenAccount..."
+
+# Integrator referral token account — receives 70% of fee.
+# Set this to earn revenue from every swap.
+# referral_account = "YourIntegratorTokenAccount..."
+
+# ── Pool Streaming ───────────────────────────────────────────
+# Pool state streaming via Geyser gRPC.
+
+[streaming]
+# geyser_endpoint = "https://your-geyser:10000"
+# geyser_token = "your-auth-token"
+
+# ── Pool Discovery ───────────────────────────────────────────
+# How new pools are found and added to the registry.
+
+[discovery]
+# Mode: "auto" (block scanner enabled), "none" (manual pools only)
+mode = "auto"
+
+# Block scanner: discovers new pools from the live block stream.
+# ~24 new pools/minute on mainnet. No Geyser needed.
+block_scan_enabled = true
+block_scan_interval_ms = 2000
+
+# ── Persistence ──────────────────────────────────────────────
+# Pool data is stored in SQLite for crash-safe, instant restarts.
+
+[storage]
+# SQLite database path
+pool_db = "./pools.db"
+
+# Pool cache TTL in ms (how long a cached state is considered fresh)
+cache_ttl_ms = 2000
+
+# Stale pool pruning: remove pools not traded in N days
+prune_interval_secs = 3600  # check every hour
+prune_max_age_days = 7      # remove if not seen in 7 days
+
+# Legacy file-based persistence (used as fallback if SQLite fails)
+# warm_storage = "./pool-state.bin"
+# snapshot = "./pool-snapshot.json"
+# snapshot_interval_secs = 300
+# warm_save_interval_secs = 30
+
+# Static pool list for manual bootstrap (optional)
+# pools_file = "./pools.json"
+
+# ── Address Lookup Tables ────────────────────────────────────
+# ALTs reduce transaction size for v0 versioned transactions.
+# Provide comma-separated base58 addresses of on-chain ALTs.
+
+[alt]
+# addresses = "BrQp6dwBFCdUfrvgnqzw9tc9kLPXTn16AmjZE8xJanMM,AoRtqBqk7Ysf3cd5NWjs93E2ekmz9KG1wLV84v7Xa1KK"
+# refresh_interval_secs = 300

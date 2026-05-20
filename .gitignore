@@ -1,0 +1,8 @@
+target/
+pool-state.bin
+pool-snapshot.json
+pools.db
+.env
+.env.local
+pools.db*
+*.tmp.*
