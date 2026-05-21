@@ -417,3 +417,9 @@ cargo test           # + E2E tests (needs RPC_URL + SIM_PRIVATE_KEY)
 **We're open to new maintainers.** If you've shipped Solana code, know your way around AMMs, gRPC, or Rust async, and want to help shape where flow-trades goes next, we'd love to hear from you.
 
 The fastest way to get involved is to **[join our Telegram](https://t.me/+3BPRvJoUvlViMzg1)** and chat with the team directly. Pull requests, issues, and ideas all welcome on this repo too.
+
+---
+
+## License
+
+MIT — see [LICENSE](./LICENSE). Free to use, fork, modify, and ship commercially.
