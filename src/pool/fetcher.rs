@@ -339,7 +339,9 @@ async fn parse_pumpfun(
         &mint,
         &token_prog,
     );
-    let fee_account = PumpFunGlobal::from_bytes_or_fallback(&global_data.data, *PUMPFUN_FEE_FALLBACK).fee_recipient;
+    let fee_account = PumpFunGlobal::try_from_bytes(&global_data.data)
+        .map(|g| g.fee_recipient)
+        .unwrap_or(*PUMPFUN_FEE_FALLBACK);
     let event_authority = *PUMPFUN_EVENT_AUTHORITY;
 
     Ok(PoolState::PumpFun {
@@ -936,7 +938,8 @@ pub fn parse_pumpfun_with_companion(
     global_data: &[u8],
 ) -> TradeResult<PoolState> {
     let bonding = PumpFunBondingCurve::try_from_bytes(pool_data);
-    let global_cfg = PumpFunGlobal::from_bytes_or_fallback(global_data, *PUMPFUN_FEE_FALLBACK);
+    let global_cfg = PumpFunGlobal::try_from_bytes(global_data)
+        .unwrap_or(PumpFunGlobal { fee_recipient: *PUMPFUN_FEE_FALLBACK });
     let associated_bonding_curve =
         spl_associated_token_account::get_associated_token_address_with_program_id(
             pool_address,

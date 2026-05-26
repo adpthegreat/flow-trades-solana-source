@@ -356,11 +356,9 @@ pub struct PumpFunGlobal {
 }
 
 impl PumpFunGlobal {
-    pub fn from_bytes_or_fallback(data: &[u8], fallback: Pubkey) -> Self {
-        match parse_layout!(PumpFunGlobalLayout, data, "") {
-            Ok(w) => Self { fee_recipient: Pubkey::from(w.fee_recipient) },
-            Err(_) => Self { fee_recipient: fallback },
-        }
+    pub fn try_from_bytes(data: &[u8]) -> TradeResult<Self> {
+        let w = parse_layout!(PumpFunGlobalLayout, data, "pumpfun global account too small")?;
+        Ok(Self { fee_recipient: Pubkey::from(w.fee_recipient) })
     }
 }
 
